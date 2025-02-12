@@ -63,9 +63,10 @@ describe('My Login application', () => {
     it('Saving the card after logout ', async () => {
        
         //add Item to Cart
-        let item = "sauce-labs-backpack"
-        let item2 = "Sauce Labs Bolt T-Shirt"
+        const item = "sauce-labs-backpack"
+        // let item2 = "sauce-labs-bolt-t-shirt"
         await addToCart(item)
+        // await addToCart(item2)
         await verifyCart(item)
         await verifyMenu()
 

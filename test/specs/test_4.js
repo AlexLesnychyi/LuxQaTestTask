@@ -15,17 +15,17 @@ describe('My Login application', () => {
     it('Logout', async () => {
         
     
-        let burgerBtn = await $('#react-burger-menu-btn')
-        let menuWrapBefore = await $('//div[@class="bm-menu-wrap"]').getAttribute('aria-hidden')
+        const burgerBtn = await $('#react-burger-menu-btn')
+        const menuWrapBefore = await $('//div[@class="bm-menu-wrap"]').getAttribute('aria-hidden')
         await expect(menuWrapBefore).toBe("true")
 
         await burgerBtn.click()
 
-        let menuWrapAfter = await $('//div[@class="bm-menu-wrap"]').getAttribute('aria-hidden')
+        const menuWrapAfter = await $('//div[@class="bm-menu-wrap"]').getAttribute('aria-hidden')
         await expect(menuWrapAfter).toBe("false")
         
-        let menuList = await $('//nav[@class="bm-item-list"]')
-        let menuItems = await menuList.$$('a')
+        const menuList = await $('//nav[@class="bm-item-list"]')
+        const menuItems = await menuList.$$('a')
         await expect(menuItems).toHaveLength(4)
         
         await $("#logout_sidebar_link").click()

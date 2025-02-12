@@ -59,12 +59,12 @@ beforeEach(async () => {
         await sortDropdown.selectByVisibleText(option);
         await browser.pause(1000); // Wait for sorting to apply
 
-        let productNames = await getSortedItems('.inventory_item_name');
-        let productPrices = await getSortedItems('.inventory_item_price');
+        const productNames = await getSortedItems('.inventory_item_name');
+        const productPrices = await getSortedItems('.inventory_item_price');
         productPrices = productPrices.map(price => parseFloat(price.replace('$', '')));
 
-        let expectedNames = [...productNames].sort();
-        let expectedPrices = [...productPrices].sort((a, b) => a - b);
+        const expectedNames = [...productNames].sort();
+        const expectedPrices = [...productPrices].sort((a, b) => a - b);
 
         if (option === 'Name (Z to A)') expectedNames.reverse();
         if (option === 'Price (high to low)') expectedPrices.reverse();
