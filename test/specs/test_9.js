@@ -108,15 +108,6 @@ beforeEach(async () => {
 
 
     it('Checkout without products', async () => {
-
-        const items = [
-            "sauce-labs-backpack",
-            "sauce-labs-bike-light",
-            "sauce-labs-bolt-t-shirt",
-            "sauce-labs-fleece-jacket",
-            "sauce-labs-onesie",
-            "test.allthethings()-t-shirt-(red)"]
-           
         // await addToCart(items[0]) check if verify empty cart work or no 
         await verifyCartIsEmpty()
         await $('#checkout').click()
