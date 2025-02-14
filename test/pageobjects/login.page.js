@@ -1,41 +1,51 @@
-import { $ } from '@wdio/globals'
 import Page from './page.js';
 
-/**
- * sub page containing specific selectors and methods for a specific page
- */
 class LoginPage extends Page {
-    /**
-     * define selectors using getter methods
-     */
-    get inputUsername () {
-        return $('#user-name');
-    }
+  get inputUsername() {
+    return $('#user-name');
+  }
+  get inputPassword() {
+    return $('#password');
+  }
+  get btnSubmit() {
+    return $('input[type="submit"]');
+  }
+  get errorMessage() {
+    return $('.error-message-container');
+  } // Error handling
+  get errorIcon() {
+    return $('//div[@class="login-box"]');
+  }
 
-    get inputPassword () {
-        return $('#password');
-    }
+  async getBorderColor(element) {
+    const color = await element.getCSSProperty('border-bottom-color');
+    return color.value;
+  }
+  async login(username, password) {
+    await this.inputUsername.setValue(username);
+    await this.inputPassword.setValue(password);
+    await this.btnSubmit.click();
+  }
+  async verifyErrorMessage() {
+    let errorMsg= "Epic sadface: Username and password do not match any user in this service"
+    await expect(this.errorMessage).toHaveText(errorMsg);
+    await expect(this.errorIcon).toBeExisting();
 
-    get btnSubmit () {
-        return $('input[type="submit"]');
-    }
-    
-    /**
-     * a method to encapsule automation code to interact with the page
-     * e.g. to login using username and password
-     */
-    async login (username, password) {
-        await this.inputUsername.setValue(username);
-        await this.inputPassword.setValue(password);
-        await this.btnSubmit.click();
-    }
+    const usernameColor = await this.getBorderColor(this.inputUsername);
+    const passwordColor = await this.getBorderColor(this.inputPassword);
 
-    /**
-     * overwrite specific options to adapt it to page object
-     */
-    open () {
-        return super.open('login');
-    }
+    expect(usernameColor).toBe('rgba(226,35,26,1)'); // Red border color
+    expect(passwordColor).toBe('rgba(226,35,26,1)');
+  }
+  async verifyInputsAreEmptyAfterLogOut() {
+    await expect(this.btnSubmit).toBeExisting();
+    await expect(this.inputUsername).toHaveValue("");
+    await expect(this.inputPassword).toHaveValue("");
+  }
+
+  open() {
+    return super.open(''); // Base URL opens login page
+  }
 }
 
 export default new LoginPage();

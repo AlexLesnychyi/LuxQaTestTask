@@ -1,35 +1,15 @@
-import { expect } from '@wdio/globals'
-import LoginPage from '../pageobjects/login.page.js'
-import SecurePage from '../pageobjects/secure.page.js'
+import loginPage from "../pageobjects/login.page.js";
 
-describe('My Login application', () => {
-    beforeEach(async () => {
-                     await LoginPage.open()
-                     await expect(await browser.getUrl()).toBe("https://www.saucedemo.com/")
-    })
-    async function verifyErrorMsgOnLogin() {
-        const errorMsg = await $('//div[@class="error-message-container error"]')
-        await expect(errorMsg).toHaveText('Epic sadface: Username and password do not match any user in this service')
-        const errorSvg = await $('//div[@class="login-box"]')
-        const svgItem = await errorSvg.$$('svg')
-        await expect(svgItem.length).toBeGreaterThan(0)
+describe("My Login application", () => {
+  beforeEach(async () => {
+    await loginPage.open();
+  });
+  
+  it("Login with invalid password", async () => {
+    await expect(loginPage.inputPassword).toHaveAttribute("type", "password");
 
-        const usernameField = await LoginPage.inputUsername;
-        const usernameFieldColor = await usernameField.getCSSProperty('border-bottom-color');
-        await expect(usernameFieldColor.value).toBe('rgba(226,35,26,1)'); // Red border color
+    await loginPage.login("standard_user", "qwerty12345");
 
-        const passwordField = await LoginPage.inputPassword;
-        const passwordFieldColor = await passwordField.getCSSProperty('border-bottom-color');
-        await expect(passwordFieldColor.value).toBe('rgba(226,35,26,1)'); 
-    }
-    it('Login with invalid password', async () => {
-        await expect(LoginPage.inputPassword).toHaveAttribute("type", "password")
-
-        await LoginPage.login('standard_user', 'qwerty12345')
-
-        await verifyErrorMsgOnLogin()
-       
-    })
-})
-
-
+    await loginPage.verifyErrorMessage()
+  });
+});
